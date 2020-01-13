@@ -1,0 +1,14 @@
+{
+  "name": "gumroad-verify-license-function",
+  "version": "1.0.0",
+  "description": "A serverless function that verifies gumroad licenses",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Tobe",
+  "license": "MIT",
+  "dependencies": {
+    "axios": "^0.19.1"
+  }
+}
