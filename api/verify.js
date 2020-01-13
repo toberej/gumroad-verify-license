@@ -6,17 +6,14 @@ module.exports = async (req, res) =>{
         //send verification request to gumroad
         const response  = await axios({
                                 method: 'post',
-                                url: 'https://api.gumroad.com/v2/licenses/verify ',
+                                url: 'https://api.gumroad.com/v2/licenses/verify',
                                 data: {
                                 product_permalink: '<your product permalink here>',
                                 license_key: req.body.license //can change this according to what the payload will look like
                                 }
                             });
-        const successful = response.success === 'true' ? true : false;
-        const refunded = response.purchase.refunded === 'true' ? true : false;
-        const chargedBack = response.purchase.chargebacked === 'true' ? true : false;
         //send response back to wherever
-        return (successful && !refunded && !chargedBack) ?  
+        return (response.data.success && !response.data.purchase.refunded && !response.data.purchase.chargebacked) ?  
             res.status(200).json({isValid: true}) : 
             res.status(200).json({isValid: false})
     }catch(err){
