@@ -10,12 +10,20 @@ module.exports = async (req, res) =>{
                                 data: {
                                 product_permalink: '<your product permalink here>',
                                 license_key: req.body.license //can change this according to what the payload will look like
-                                }
+                                },
+                                validateStatus: function (status) {
+                                    return status < 500; // Reject only if the status code is greater than or equal to 500
+                                  }
                             });
-        //send response back to wherever
-        return (response.data.success && !response.data.purchase.refunded && !response.data.purchase.chargebacked) ?  
+        
+        if(response.data.success){
+            //Check if refunded or chargedback
+            return (!response.data.purchase.refunded && !response.data.purchase.chargebacked) ?  
             res.status(200).json({isValid: true}) : 
             res.status(200).json({isValid: false})
+        }else{
+            return res.status(200).json({isValid: false})
+        }
     }catch(err){
         console.log(err);
         return res.status(500).json({errorMessage: 'Something went wrong'});
